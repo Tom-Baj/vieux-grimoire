@@ -6,12 +6,7 @@ const app = express();
 const bookRoutes = require('./routes/book');
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://tombajoux:91QGAoduqYGNkPFt@vieuxgrimoire.p4y5wwz.mongodb.net/?retryWrites=true&w=majority&appName=VieuxGrimoire',
-    { useNewUrlParser: true,
-      useUnifiedTopology: true })
-    .then(() => console.log('Connexion à MongoDB réussie !'))
-    .catch(() => console.log('Connexion à MongoDB échouée !'));
-
+const client = new MongoClient(process.env.MONGO_URL);
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

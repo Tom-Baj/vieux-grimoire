@@ -1,3 +1,4 @@
+const { Code } = require('mongodb');
 const Book = require('../models/Book');
 const fs = require('fs');
 
@@ -39,12 +40,6 @@ exports.createBook = (req, res, next) => {
         .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
         .catch(error => res.status(400).json({ error }));
     }
-
-exports.updateBook = (req, res, next) => {
-    Book.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
-        .catch(error => res.status(400).json({ error }));
-    };
 
 exports.modifyBook = (req, res, next) => {
     const bookObject = req.file ? {
