@@ -1,6 +1,7 @@
 const { Code } = require('mongodb');
 const Book = require('../models/Book');
 const fs = require('fs');
+const sharp = require('sharp');
 
 
 exports.getAllBooks = (req, res, next) => {
@@ -22,24 +23,42 @@ exports.getBestRating = (req, res, next) => {
     }
 
 exports.createRating = (req, res, next) => {
+    const rating = JSON.parse(req.body.newRating);
+    delete rating._id;
+    delete rating._userId;
+    const newRating = {
+        _userId: req.auth.userId,
+        rating: req.body.rating,
+    };
     Book.updateOne({ _id: req.params.id }, { $push: { ratings: req.body } })
         .then(() => res.status(200).json({ message: 'Objet modifié !'}))
         .catch(error => res.status(400).json({ error }));
     }
 
-exports.createBook = (req, res, next) => {
+exports.createBook = async (req, res, next) => {
     const bookObject = JSON.parse(req.body.book);
     delete bookObject._id;
     delete bookObject._userId;
+
     const book = new Book({
         ...bookObject,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
+    const timestamp = new Date().toISOString();
+    const ref = `${timestamp}.webp`;
+    await sharp(req.file.path)
+        .webp({ quality: 80 })
+        .toFile(`images/${ref}`);
+    fs.unlink
+    
+
     book.save()
-        .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
+        .then(() => {
+            res.status(201).json({ book });
+        })
         .catch(error => res.status(400).json({ error }));
-    }
+    };
 
 exports.modifyBook = (req, res, next) => {
     const bookObject = req.file ? {
