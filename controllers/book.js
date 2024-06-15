@@ -2,6 +2,7 @@ const { Code } = require('mongodb');
 const Book = require('../models/Book');
 const fs = require('fs');
 const sharp = require('sharp');
+const e = require('express');
 
 
 exports.getAllBooks = (req, res, next) => {
@@ -22,18 +23,36 @@ exports.getBestRating = (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
     }
 
+/* 
+    - Créer une note
+    - Note entre 0 - 5
+    - Vérifier si l'utilisateur a déjà noté le livre
+    - Vérifier si la note est correcte
+    - Mettre à jour la note moyenne
+
+*/
+
 exports.createRating = (req, res, next) => {
     const rating = JSON.parse(req.body.newRating);
-    delete rating._id;
-    delete rating._userId;
+    //Vérifie le corp de la requête
     const newRating = {
-        _userId: req.auth.userId,
-        rating: req.body.rating,
+        userId: req.auth.userId,
+        grade: req.body.rating,
     };
-    Book.updateOne({ _id: req.params.id }, { $push: { ratings: req.body } })
-        .then(() => res.status(200).json({ message: 'Objet modifié !'}))
-        .catch(error => res.status(400).json({ error }));
-    }
+
+    Book.findOne({ _id: req.params.id })
+        .then(book => {
+            if (book.ratings.userId === req.auth.userId) {
+                return res.status(400).json({ message: 'Vous avez déjà noté ce livre !' });
+            } else if (newRating.grade < 0 || newRating.grade > 5) {
+                return res.status(400).json({ message: 'La note doit être comprise entre 0 et 5 !' });
+            } else {
+                Book.updateOne({ _id: req.params.id }, { $push: { ratings: newRating } })
+                    .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+                    .catch(error => res.status(400).json({ error }));
+            }
+        });
+    };
 
 exports.createBook = async (req, res, next) => {
     const bookObject = JSON.parse(req.body.book);
@@ -52,7 +71,6 @@ exports.createBook = async (req, res, next) => {
         .toFile(`images/${ref}`);
     fs.unlink
     
-
     book.save()
         .then(() => {
             res.status(201).json({ book });

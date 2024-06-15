@@ -1,0 +1,1 @@
+MONGO_URL = "mongodb+srv://<utilisateur>:<password>F@<applicationName>.rqip5fo.mongodb.net/?retryWrites=true&w=majority&appName=<applicationName>"
