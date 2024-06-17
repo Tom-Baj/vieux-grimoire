@@ -32,7 +32,7 @@ exports.getBestRating = (req, res, next) => {
 
 */
 
-exports.createRating = (req, res, next) => {
+/* exports.createRating = (req, res, next) => {
     const rating = JSON.parse(req.body.newRating);
     //Vérifie le corp de la requête
     const newRating = {
@@ -52,30 +52,83 @@ exports.createRating = (req, res, next) => {
                     .catch(error => res.status(400).json({ error }));
             }
         });
+    }; */
+exports.createRating = (req, res, next) => {
+    console.log('Request body:', req.body);
+
+    const newRating = {
+        userId: req.auth.userId,
+        grade: req.body.rating,
     };
+    console.log('New rating:', newRating);
+
+    if (newRating.grade < 0 || newRating.grade > 5) {
+        return res.status(400).json({ message: 'La note doit être comprise entre 0 et 5 !' });
+    }
+
+    console.log('Looking for book with ID:', req.params.id);
+    Book.findOne({ _id: req.params.id })
+        .then(book => {
+            if (!book) {
+                console.log('Book not found');
+                return res.status(404).json({ message: 'Livre non trouvé' });
+            }
+
+            console.log('Found book:', book);
+            const userHasRated = book.ratings.some(rating => rating.userId === req.auth.userId);
+            console.log('User has rated:', userHasRated);
+            if (userHasRated) {
+                return res.status(400).json({ message: 'Vous avez déjà noté ce livre !' });
+            }
+
+            book.ratings.push(newRating);
+            console.log('Updated ratings:', book.ratings);
+
+            const totalRatings = book.ratings.reduce((sum, rating) => sum + rating.grade, 0);
+            book.averageRating = totalRatings / book.ratings.length;
+            console.log('New average rating:', book.averageRating);
+
+            return book.save()
+                .then(updatedBook => {
+                    console.log('Book updated successfully');
+                    res.status(200).json(updatedBook);
+                })
+                .catch(error => {
+                    console.log('Error saving book:', error);
+                    res.status(500).json({ error });
+                });
+        })
+        .catch(error => {
+            console.log('Error finding book:', error);
+            res.status(500).json({ error });
+        });
+};
+
 
 exports.createBook = async (req, res, next) => {
     const bookObject = JSON.parse(req.body.book);
     delete bookObject._id;
     delete bookObject._userId;
 
-    const book = new Book({
-        ...bookObject,
-        userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    });
+    
     const timestamp = new Date().toISOString();
     const ref = `${timestamp}.webp`;
     await sharp(req.file.path)
         .webp({ quality: 80 })
         .toFile(`images/${ref}`);
-    fs.unlink
-    
-    book.save()
+    fs.unlink(`images/${req.file.filename}`, () => {
+        const book = new Book({
+            ...bookObject,
+            userId: req.auth.userId,
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${ref}`
+        });
+
+        book.save()
         .then(() => {
             res.status(201).json({ book });
         })
         .catch(error => res.status(400).json({ error }));
+    });
     };
 
 exports.modifyBook = (req, res, next) => {
