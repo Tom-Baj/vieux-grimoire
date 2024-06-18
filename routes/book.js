@@ -4,9 +4,9 @@ const multer = require('../middleware/multer-config');
 const router = express.Router();
 const stuffCtrl = require('../controllers/book');
 
+router.get('/bestrating', stuffCtrl.getBestRating);
 router.get('/', stuffCtrl.getAllBooks);
 router.get('/:id', stuffCtrl.getOneBook);
-router.get('/bestrating', stuffCtrl.getBestRating);
 router.post('/', auth, multer, stuffCtrl.createBook);
 router.put('/:id', auth, multer, stuffCtrl.modifyBook);
 router.delete('/:id', auth, stuffCtrl.deleteBook);
