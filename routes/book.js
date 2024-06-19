@@ -1,9 +1,11 @@
+// Importing a modules
 const express = require('express');
 const auth = require('../middleware/auth');
 const multer = require('../middleware/multer-config');
 const router = express.Router();
 const stuffCtrl = require('../controllers/book');
 
+// Create routes
 router.get('/bestrating', stuffCtrl.getBestRating);
 router.get('/', stuffCtrl.getAllBooks);
 router.get('/:id', stuffCtrl.getOneBook);
