@@ -12,6 +12,7 @@ Kévin m'a contacté pour me proposer de travailler avec lui de manière à lier
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Utilisation](#utilisation)
+- [Front-end](#front-end)
 
 ## Prérequis
 
@@ -46,5 +47,23 @@ Pour utiliser votre projet après l'installation.
 
 ```bash
 # Pour démarrer le projet
+npm start
+```
+
+## Front-end
+
+Pour ajouter et installer la partie Front-end
+
+```bash
+# Clonez ce dépôt
+https://github.com/OpenClassrooms-Student-Center/P7-Dev-Web-livres.git
+
+# Allez dans le répertoire du projet
+cd P7-Dev-Web-livres
+
+# Installez les dépendances
+npm install
+
+# Pour démarrer le front-end
 npm start
 ```
