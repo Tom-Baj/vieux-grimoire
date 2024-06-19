@@ -2,4 +2,5 @@
 
 Remplacer les sections mentionnant `utilisateur`, `password`, `applicationName` par vos propres informations.
 
-MONGO_URL = "mongodb+srv://`utilisateur`:`password`F@`applicationName`.rqip5fo.mongodb.net/?retryWrites=true&w=majority&appName=`applicationName`"
+```plaintext
+MONGO_URL = "mongodb+srv://utilisateur:password@applicationName.rqip5fo.mongodb.net/?retryWrites=true&w=majority&appName=applicationName"

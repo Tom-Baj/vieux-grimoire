@@ -1,28 +1,29 @@
 # Mon Vieux Grimoire
 
-## Description
-
-Brève description de votre projet. Expliquez à quoi il sert, quels problèmes il résout ou quelles fonctionnalités principales il offre.
+## Introduction
 
 Je suis développeur back-end en freelance dans la région de Lille.
- 
 J'ai l’habitude de travailler avec Kévin, un développeur front-end plus expérimenté que moi.
-
-Kévin m'a contacté pour me proposer de travailler avec lui de manière à liée mon backend à son frontend sur un nouveau projet.
- 
-Il s'agit de "Mon Vieux Grimoire", une petite chaîne de librairies qui souhaite ouvrir un site de référencement et de notation de livres.
- 
-
+Kévin m'a contacté pour me proposer de travailler avec lui de manière à lier mon backend à son frontend sur un nouveau projet.
 
 ## Table des Matières
 
+- [Prérequis](#prérequis)
 - [Installation](#installation)
+- [Configuration](#configuration)
 - [Utilisation](#utilisation)
 
+## Prérequis
+
+Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur votre machine :
+
+- [Node.js](https://nodejs.org/) (version 14 ou supérieure)
+- [npm](https://www.npmjs.com/) (version 6 ou supérieure)
+- [Git](https://git-scm.com/)
 
 ## Installation
 
-Instructions pour installer et configurer votre projet.
+Instructions pour installer et configurer le projet :
 
 ```bash
 # Clonez ce dépôt
@@ -34,6 +35,10 @@ cd vieux-grimoire
 # Installez les dépendances
 npm install
 ```
+
+## Configuration
+
+Avant de démarrer le projet, configurez les variables d'environnement nécessaires. Utilisez le fichier env_example.env comme modèle pour créer votre fichier .env.
 
 ## Utilisation
 
