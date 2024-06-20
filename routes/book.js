@@ -5,7 +5,7 @@ const multer = require('../middleware/multer-config');
 const router = express.Router();
 const stuffCtrl = require('../controllers/book');
 
-// Create routes
+// Create routes for books
 router.get('/bestrating', stuffCtrl.getBestRating);
 router.get('/', stuffCtrl.getAllBooks);
 router.get('/:id', stuffCtrl.getOneBook);
