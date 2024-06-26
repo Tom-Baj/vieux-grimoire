@@ -3,4 +3,4 @@
 Remplacer les sections mentionnant `utilisateur`, `password`, `applicationName` par vos propres informations.
 
 ```plaintext
-MONGO_URL = "mongodb+srv://utilisateur:password@applicationName.rqip5fo.mongodb.net/?retryWrites=true&w=majority&appName=applicationName"
+MONGO_URL = "mongodb+srv://tomb:S9TjWDiTfboNVRsF@vieux-grimoire.rqip5fo.mongodb.net/?retryWrites=true&w=majority&appName=vieux-grimoire"
